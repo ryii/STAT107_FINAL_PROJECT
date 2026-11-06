@@ -1,0 +1,7 @@
+Player,Scope,FinalsSeries,FinalsGames,MeanSeriesAudienceMillions,GameWeightedAudienceMillions,MedianSeriesAudienceMillions,SDSeriesAudienceMillions,MinSeriesAudienceMillions,MaxSeriesAudienceMillions
+Kobe Bryant,All Finals appearances,7,38,16.7786,16.8474,17.402,1.7806,14.347,18.996
+Kobe Bryant,Excluding 2020,7,38,16.7786,16.8474,17.402,1.7806,14.347,18.996
+LeBron James,All Finals appearances,10,55,16.2437,16.4702,17.4338,4.407,7.6717,20.432
+LeBron James,Excluding 2020,9,49,17.1961,17.5476,17.4743,3.4123,9.29,20.432
+Michael Jordan,All Finals appearances,6,35,25.2333,25.2714,25.25,2.819,20.8,29.0
+Michael Jordan,Excluding 2020,6,35,25.2333,25.2714,25.25,2.819,20.8,29.0
