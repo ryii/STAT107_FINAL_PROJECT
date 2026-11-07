@@ -1,0 +1,100 @@
+---
+title: "Data cleaning and processing"
+output: html_document
+---
+
+## Inputs and scope
+
+The supplied CSVs are manually collected and already standardized source tables.
+This file validates those inputs, normalizes types, derives flags and units, and
+recomputes summaries. It does not claim to reconstruct every original web
+transcription. Career statistics represent full regular-season careers. Finals
+observations represent series, not unique viewers or individual player effects.
+
+```{r setup}
+source("01_functions.R")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Import saved data
+
+```{r import}
+career <- read.csv("data/input/career_stats.csv", stringsAsFactors = FALSE)
+finals <- read.csv("data/input/finals_viewership.csv", stringsAsFactors = FALSE)
+jerseys <- read.csv("data/input/jersey_sales_rankings.csv",
+                    stringsAsFactors = FALSE, na.strings = "NA")
+other <- read.csv("data/input/other_viewership.csv", stringsAsFactors = FALSE)
+```
+
+## Normalize names, types and units
+
+Trim text and convert measurement columns explicitly. UnitsSold and RevenueUSD
+remain missing because sources provide ranks, not quantities or revenue.
+
+```{r normalize}
+for (v in c("Player", "SourceID")) career[[v]] <- trimws(career[[v]])
+finals$Player <- trimws(finals$Player)
+for (v in c("Games", "TotalPoints", "PPG", "RPG", "APG", "FG_Pct",
+            "ThreePoint_Pct", "FT_Pct")) career[[v]] <- as.numeric(career[[v]])
+for (v in c("FinalsYear", "SeriesGames", "ViewersMillions")) {
+  finals[[v]] <- as.numeric(finals[[v]])
+}
+finals$Champion <- as.logical(finals$Champion)
+finals$PandemicYear <- finals$FinalsYear == 2020
+finals$AverageUSViewers <- finals$ViewersMillions * 1000000
+jerseys$SalesRank <- as.numeric(jerseys$SalesRank)
+career <- career[order(career$Player), ]
+finals <- finals[order(finals$Player, finals$FinalsYear), ]
+```
+
+## Validate observations
+
+Do not delete valid low audience values or substitute zeros for unavailable
+sales. Failure of these checks stops the workflow so an error is investigated.
+
+```{r validation}
+stopifnot(nrow(career) == 3, !anyDuplicated(career$Player))
+stopifnot(nrow(finals) == 23,
+          !anyDuplicated(finals[c("Player", "FinalsYear")]))
+stopifnot(!anyNA(career), !anyNA(finals), all(finals$ViewersMillions > 0),
+          all(finals$SeriesGames %in% 4:7), !anyNA(jerseys$SalesRank))
+stopifnot(all(career$Games > 0), all(career$TotalPoints > 0))
+stopifnot(all(career$FG_Pct >= 0 & career$FG_Pct <= 100))
+stopifnot(all(career$ThreePoint_Pct >= 0 & career$ThreePoint_Pct <= 100))
+stopifnot(all(career$FT_Pct >= 0 & career$FT_Pct <= 100))
+table(finals$Player)
+colSums(is.na(jerseys))
+```
+
+## Derive descriptive summaries
+
+Each series receives equal weight. The comparison excluding 2020 is a
+sensitivity analysis; 2020 remains in the main dataset.
+
+```{r process}
+summary_all <- summarize_players(finals)
+summary_without_2020 <- summarize_players(subset(finals, !PandemicYear))
+weighted_audience <- aggregate(
+  cbind(WeightedAudience = ViewersMillions * SeriesGames,
+        Games = SeriesGames) ~ Player, data = finals, FUN = sum)
+weighted_audience$GameWeightedAudienceMillions <-
+  weighted_audience$WeightedAudience / weighted_audience$Games
+knitr::kable(summary_all, digits = 3, row.names = FALSE)
+```
+
+## Save outputs
+
+```{r save}
+dir.create("data/processed", recursive = TRUE, showWarnings = FALSE)
+write.csv(career, "data/processed/career_stats.csv", row.names = FALSE)
+write.csv(finals, "data/processed/finals_viewership.csv", row.names = FALSE)
+write.csv(jerseys, "data/processed/jersey_sales_rankings.csv", row.names = FALSE,
+          na = "NA")
+write.csv(summary_all, "data/processed/viewership_summary.csv", row.names = FALSE)
+write.csv(summary_without_2020,
+          "data/processed/viewership_without_2020.csv", row.names = FALSE)
+write.csv(weighted_audience, "data/processed/weighted_viewership.csv",
+          row.names = FALSE)
+save(career, finals, jerseys, other, summary_all, summary_without_2020,
+     weighted_audience, file = "data/processed/12_CleanData.RData")
+```

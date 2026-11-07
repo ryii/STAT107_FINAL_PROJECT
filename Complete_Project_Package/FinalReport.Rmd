@@ -1,0 +1,101 @@
+---
+title: "Jordan, Kobe and LeBron: Career Performance and Finals Audiences"
+author: "STAT107 Project Team 18 - Rhein Lipardo, Axcan Martinez, Ismail Ashour"
+date: "2026-11-06"
+output:
+  pdf_document:
+    toc: false
+fontsize: 10pt
+geometry: margin=0.85in
+---
+
+# Abstract
+
+This project compares Michael Jordan, Kobe Bryant and LeBron James using full
+regular-season career statistics and U.S. television audiences for Finals series
+featuring each player. The data contain three career summaries and 23 Finals
+appearances. Jordan has the highest scoring average, while LeBron has the
+highest rebound and assist averages. Jordan's Finals appearances have the
+highest mean audience in these records. LeBron's mean audience exceeds Kobe's
+when 2020 is excluded, demonstrating sensitivity to scope. Jersey-sales rankings
+are supplementary.
+
+# Introduction
+
+How do these players compare in career production and the audiences for their
+Finals appearances? We combine these ideas to see who performed best but as
+well as who left a legacy that garnered fans to tune in on the game of 
+basketball. We examine them as separate measurable dimensions instead of
+assuming that one statistic defines greatness. The current analysis describes
+the complete selected career snapshots and Finals records. It does not draw a
+random sample of all possible basketball players or broadcasts.
+
+# Executive summary
+
+- Jordan leads career PPG; LeBron leads career RPG and APG among these players.
+- Jordan's series-average Finals audience is the largest in the collected data.
+- Removing 2020 changes the ordering of LeBron's and Kobe's audience means.
+- Published jersey ranks lack the coverage and sales quantities needed for a
+  career-wide three-player sales comparison.
+
+# Data and methods
+
+StatMuse supplies three full regular-season career summaries: games, points,
+PPG, RPG, APG and shooting percentages. These are the retrieved
+snapshot, not a live feed as Lebron is currently active on this list. Jordan's 
+six seasonal performance rows were replaced
+in the comparison by his career summary.
+
+Sports Media Watch and Front Office Sports provide 23 Finals-series audience
+records: Jordan (6), Kobe (7) and LeBron (10). Variables include player, year,
+opponent, series games, championship result, audience, method and a pandemic
+flag. Audience is average U.S. viewers per game in millions, not worldwide or
+unique career viewers. Kobe and Jordan use reported series averages; LeBron
+uses means of rounded game figures from the historical archive. This source
+precision difference and historical measurement changes remain limitations.
+
+The cleaning RMD trims names, converts numeric fields, checks duplicate keys
+and missing required values, derives audience units and a 2020 flag, and saves
+processed CSVs and an RData environment. It recomputes descriptive summaries.
+The standardized input tables already reflect earlier collection and unit
+conversion; this workflow does not recreate the original web extraction.
+No valid Finals series was dropped. Unknown jersey quantities remain missing.
+
+Six jersey-ranking entries and two Cleveland-return game audiences are retained
+as supplementary records. The latter are excluded from Finals summaries.
+Means and medians give each Finals series equal weight. A game-weighted mean
+is also saved by the processing file; it is approximate for rounded source data.
+
+# Results
+
+```{r results, echo=FALSE, results="asis"}
+body <- readLines("31_DataVisualization.Rmd")
+cat(knitr::knit_child(text = body[-seq_len(5)], quiet = TRUE), sep = "\n")
+```
+
+# Further visualization and analysis plan
+
+We plan on adding comparable Finals-specific player performance records if 
+exploring performance versus audience; repeating career averages over Finals 
+rows would not supply independent performance observations. As well as explore 
+opponent, series length and television era before considering regression. This
+can give context and maybe a sense of difficulty each player had to face, which
+would add better support for the question of the better player.
+
+# Limitations
+
+Career lengths, playing roles, pace, teammates and rules differ. Finals-only
+selection excludes seasons without an appearance. Television access and
+measurement methods changed over time, and the pandemic shifted the 2020
+schedule. Rounding and audience averaging methods differ across sources.
+These conditions prevent causal attribution of audiences to a player and a
+single definitive GOAT conclusion.
+
+# Reproducibility
+For reproducibility please refer to the README within the project package 
+folder.
+
+# Sources
+
+```{r sources, child="SOURCES.md"}
+```

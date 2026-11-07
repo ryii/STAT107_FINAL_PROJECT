@@ -1,0 +1,24 @@
+"Player","FinalsYear","Opponent","SeriesGames","ViewersMillions","Champion","PandemicYear","Method","SourceID","AverageUSViewers"
+"Kobe Bryant",2000,"Indiana Pacers",6,17.402,TRUE,FALSE,"Reported series average","S2",17402000
+"Kobe Bryant",2001,"Philadelphia 76ers",5,18.996,TRUE,FALSE,"Reported series average","S2",18996000
+"Kobe Bryant",2002,"New Jersey Nets",4,15.678,TRUE,FALSE,"Reported series average","S2",15678000
+"Kobe Bryant",2004,"Detroit Pistons",5,17.942,FALSE,FALSE,"Reported series average","S2",17942000
+"Kobe Bryant",2008,"Boston Celtics",6,14.941,FALSE,FALSE,"Reported series average","S2",14941000
+"Kobe Bryant",2009,"Orlando Magic",5,14.347,TRUE,FALSE,"Reported series average","S2",14347000
+"Kobe Bryant",2010,"Boston Celtics",7,18.144,TRUE,FALSE,"Reported series average","S2",18144000
+"LeBron James",2007,"San Antonio Spurs",4,9.29,FALSE,FALSE,"Mean of rounded game audiences","S4",9290000
+"LeBron James",2011,"Dallas Mavericks",6,17.3933,FALSE,FALSE,"Mean of rounded game audiences","S4",17393300
+"LeBron James",2012,"Oklahoma City Thunder",5,16.848,TRUE,FALSE,"Mean of rounded game audiences","S4",16848000
+"LeBron James",2013,"San Antonio Spurs",7,17.4743,TRUE,FALSE,"Mean of rounded game audiences","S4",17474300
+"LeBron James",2014,"San Antonio Spurs",5,15.544,FALSE,FALSE,"Mean of rounded game audiences","S4",15544000
+"LeBron James",2015,"Golden State Warriors",6,19.9433,FALSE,FALSE,"Mean of rounded game audiences","S4",19943300
+"LeBron James",2016,"Golden State Warriors",7,20.2829,TRUE,FALSE,"Mean of rounded game audiences","S4",20282900
+"LeBron James",2017,"Golden State Warriors",5,20.432,FALSE,FALSE,"Mean of rounded game audiences","S4",20432000
+"LeBron James",2018,"Golden State Warriors",4,17.5575,FALSE,FALSE,"Mean of rounded game audiences","S4",17557500
+"LeBron James",2020,"Miami Heat",6,7.6717,TRUE,TRUE,"Mean of rounded game audiences","S4",7671700
+"Michael Jordan",1991,"Los Angeles Lakers",5,23.9,TRUE,FALSE,"Reported series average (rounded)","S3",23900000
+"Michael Jordan",1992,"Portland Trail Blazers",6,20.8,TRUE,FALSE,"Reported series average (rounded)","S3",20800000
+"Michael Jordan",1993,"Phoenix Suns",6,27.2,TRUE,FALSE,"Reported series average (rounded)","S3",27200000
+"Michael Jordan",1996,"Seattle SuperSonics",6,24.9,TRUE,FALSE,"Reported series average (rounded)","S3",24900000
+"Michael Jordan",1997,"Utah Jazz",6,25.6,TRUE,FALSE,"Reported series average (rounded)","S3",25600000
+"Michael Jordan",1998,"Utah Jazz",6,29,TRUE,FALSE,"Reported series average (rounded)","S3",2.9e+07

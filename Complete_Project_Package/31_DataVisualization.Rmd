@@ -1,0 +1,99 @@
+---
+title: "Career performance and Finals audiences"
+output: html_document
+---
+
+## Preliminary visualizations and findings
+
+```{r analysis-setup, include=FALSE}
+if (!file.exists("data/processed/12_CleanData.RData")) {
+  stop("Run 11_DataCleaning.Rmd first, following README.md.")
+}
+load("data/processed/12_CleanData.RData")
+knitr::opts_chunk$set(echo = FALSE, fig.width = 7, fig.height = 4)
+colors <- c("Michael Jordan" = "#B33B43", "Kobe Bryant" = "#7255A5",
+            "LeBron James" = "#247F87")
+```
+
+### Career production
+
+```{r performance-table}
+knitr::kable(career[c("Player", "Games", "TotalPoints", "PPG", "RPG", "APG")],
+             digits = 1, row.names = FALSE)
+```
+
+```{r performance-plot}
+values <- t(as.matrix(career[c("PPG", "RPG", "APG")]))
+barplot(values, beside = TRUE, names.arg = career$Player,
+        col = c("#24446A", "#6A9FB5", "#D0A548"),
+        ylab = "Per game", main = "Regular-season career production",
+        ylim = c(0, 36), legend.text = c("Points", "Rebounds", "Assists"),
+        args.legend = list(x = "topright", bty = "n"))
+```
+
+Jordan has the highest career scoring average (30.1 PPG), while LeBron has
+the highest rebound (7.5 RPG) and assist (7.4 APG) averages in this snapshot.
+Kobe averaged 25.0 PPG, 5.2 RPG and 4.7 APG. These statistics describe different
+contributions and do not measure defense, shot difficulty or era-adjusted value.
+
+### Finals audiences
+
+```{r audience-table}
+knitr::kable(summary_all, digits = 3, row.names = FALSE,
+ caption = "Series audience summaries in millions; equal weight per series")
+```
+
+```{r audience-boxplot}
+boxplot(ViewersMillions ~ Player, data = finals,
+        col = colors[sort(unique(finals$Player))],
+        ylab = "Average U.S. viewers per game (millions)", xlab = "",
+        main = "Finals-series audiences by player")
+stripchart(ViewersMillions ~ Player, data = finals, vertical = TRUE,
+           method = "stack", add = TRUE, pch = 19, col = "#253444")
+```
+
+Mean series audiences are approximately 25.23 million for Jordan, 16.78 million
+for Kobe, and 16.24 million for LeBron. These are conditional on Finals
+appearances and reflect team matchups and television eras. They do not establish
+how many viewers each player caused to watch.
+
+```{r audience-time}
+plot(finals$FinalsYear, finals$ViewersMillions,
+     col = colors[finals$Player], pch = ifelse(finals$PandemicYear, 17, 19),
+     xlab = "Finals year", ylab = "Average U.S. viewers per game (millions)",
+     main = "Finals audiences across television eras")
+legend("topright", legend = names(colors), col = colors, pch = 19, bty = "n")
+text(finals$FinalsYear[finals$PandemicYear],
+     finals$ViewersMillions[finals$PandemicYear], "2020", pos = 3)
+```
+
+Player and era are closely connected in these records. The scatterplot helps
+show this limitation; audience differences cannot be assigned to player identity
+alone. Keep the valid 2020 bubble observation and examine its influence.
+
+### Sensitivity to 2020
+
+```{r sensitivity}
+knitr::kable(summary_without_2020, digits = 3, row.names = FALSE,
+ caption = "Series audience summaries excluding 2020")
+```
+
+Excluding 2020 raises LeBron's equal-series mean to about 17.20 million,
+compared with 16.24 million when all his appearances are included. His mean then
+exceeds Kobe's 16.78 million in this dataset. Jordan's and Kobe's results are
+unchanged. This shows why the scope must be stated alongside any ranking.
+
+### Jersey popularity: selected reporting periods
+
+```{r jersey-table}
+knitr::kable(jerseys[c("Player", "ReportDateOrYear", "SalesRank")],
+             row.names = FALSE,
+ caption = "Selected published jersey rankings; lower rank means higher placement")
+```
+
+In the cited 2003 list, Kobe ranked first and Jordan fourth. In the NBA's April
+2011 release, LeBron ranked first and Kobe second; in April 2012, Kobe ranked
+third and LeBron fourth. These are selected historical snapshots with differing
+periods and retail scopes. They are not career sales totals. Units sold and
+revenue are unavailable, so the current data cannot support a three-player
+career jersey-sales ranking. Additional matched-period data would be needed.
